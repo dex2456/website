@@ -127,8 +127,13 @@
       showMessage(random);
     }
 
-    showRandomMessage();
-    setInterval(showRandomMessage, 5000);
+    // Hiển thị ảnh đầu tiên trước
+showMessage(messages[0]);
+
+// Sau 5 giây, bắt đầu chuyển ngẫu nhiên
+setTimeout(() => {
+  setInterval(showRandomMessage, 5000);
+}, 5000);
   </script>
 
   <audio id="bgMusic" autoplay loop muted>
