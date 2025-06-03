@@ -44,16 +44,17 @@
     }
 
     .message-container img {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      border-radius: 20px;
-      margin-top: 15px;
-      box-shadow: 0 6px 15px rgba(255, 105, 180, 0.4);
-      opacity: 0;
-      transition: opacity 1s ease;
-      border: 3px solid #ff4da6;
-    }
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 20px;
+  margin-top: 15px;
+  box-shadow: 0 6px 15px rgba(255, 105, 180, 0.4);
+  opacity: 0;
+  transition: opacity 1s ease; /* <-- chuyển tiếp mượt */
+  border: 3px solid #ff4da6;
+}
+
 
     .message-text {
       font-size: 22px;
@@ -116,7 +117,7 @@
 
   <script>
     const messages = [
-      { text: "Đi chơi nè ❤️", img: "uploads/1.jpg" },
+      { text: "Buổi hẹn hò đầu tiên nè ❤️", img: "uploads/1.jpg" },
       { text: "Cảm ơn em vì đã ở bên anh 🌟", img: "uploads/2.jpg" },
       { text: "Em là người anh yêu quý nhất 💕", img: "uploads/3.jpg" },
       { text: "Sinh nhật của em 🥰", img: "uploads/4.jpg" },
@@ -136,19 +137,21 @@
     let intervalId;
 
     function showMessage(message) {
-      messageText.style.opacity = 0;
-      messageImage.style.opacity = 0;
+  // Ẩn hiện tại
+  messageText.style.opacity = 0;
+  messageImage.style.opacity = 0;
 
-      setTimeout(() => {
-        messageText.textContent = message.text;
-        messageImage.src = message.img;
-      }, 500);
+  // Khi ảnh load xong thì hiển thị
+  messageImage.onload = () => {
+    messageText.textContent = message.text;
+    messageText.style.opacity = 1;
+    messageImage.style.opacity = 1;
+  };
 
-      setTimeout(() => {
-        messageText.style.opacity = 1;
-        messageImage.style.opacity = 1;
-      }, 600);
-    }
+  // Gán ảnh (bắt đầu load)
+  messageImage.src = message.img;
+}
+
 
     function startExperience() {
       // Ẩn nút bắt đầu, hiện nội dung
