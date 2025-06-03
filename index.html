@@ -137,17 +137,32 @@ setInterval(showNextMessage, 5000);
 
   </script>
 
-  <audio id="bgMusic" autoplay loop muted>
-    <source src="audio/music.mp3" type="audio/mpeg" />
-    Trình duyệt của bạn không hỗ trợ âm thanh.
-  </audio>
+  <audio id="bgMusic" autoplay loop>
+  <source src="audio/music.mp3" type="audio/mpeg" />
+  Trình duyệt của bạn không hỗ trợ âm thanh.
+</audio>
 
-  <script>
-    window.addEventListener('click', function () {
-      const audio = document.getElementById('bgMusic');
-      audio.muted = false;
-      audio.play();
-    }, { once: true });
-  </script>
+<script>
+  const bgMusic = document.getElementById("bgMusic");
+
+  // Mute để cho phép autoplay
+  bgMusic.muted = true;
+  bgMusic.play().catch(() => {
+    // Một số trình duyệt vẫn yêu cầu tương tác
+  });
+
+  // Khi người dùng chạm vào lần đầu, bỏ mute và phát lại
+  window.addEventListener('click', function () {
+    bgMusic.muted = false;
+    bgMusic.play();
+  }, { once: true });
+
+  // Cũng thêm hỗ trợ chạm trên di động
+  window.addEventListener('touchstart', function () {
+    bgMusic.muted = false;
+    bgMusic.play();
+  }, { once: true });
+</script>
+
 </body>
 </html>
