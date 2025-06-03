@@ -26,6 +26,8 @@
     }
 
     .message-container {
+              display: none;
+
       position: absolute;
       top: 50%;
       left: 50%;
@@ -87,10 +89,30 @@
 </head>
 <body>
   <div class="overlay"></div>
+  <div id="startButton" style="
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background-color: #ff4da6;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 105, 180, 0.6);
+  ">
+    Bắt đầu trải nghiệm
+  </div>
   <div class="message-container">
     <div class="message-text" id="messageText">Đang tải...</div>
     <img id="messageImage" src="" alt="Yêu thương" />
   </div>
+  <audio id="bgMusic" autoplay loop muted>
+    <source src="audio/music.mp3" type="audio/mpeg" />
+    Trình duyệt của bạn không hỗ trợ âm thanh.
+  </audio>
 
   <script>
     const messages = [
@@ -105,64 +127,55 @@
     ];
 
     const messageText = document.getElementById("messageText");
-const messageImage = document.getElementById("messageImage");
+    const messageImage = document.getElementById("messageImage");
+    const messageContainer = document.querySelector(".message-container");
+    const startButton = document.getElementById("startButton");
+    const bgMusic = document.getElementById("bgMusic");
 
-let currentIndex = 0;
+    let currentIndex = 0;
+    let intervalId;
 
-function showMessage(message) {
-  messageText.style.opacity = 0;
-  messageImage.style.opacity = 0;
+    function showMessage(message) {
+      messageText.style.opacity = 0;
+      messageImage.style.opacity = 0;
 
-  setTimeout(() => {
-    messageText.textContent = message.text;
-    messageImage.src = message.img;
-  }, 500);
+      setTimeout(() => {
+        messageText.textContent = message.text;
+        messageImage.src = message.img;
+      }, 500);
 
-  setTimeout(() => {
-    messageText.style.opacity = 1;
-    messageImage.style.opacity = 1;
-  }, 600);
-}
+      setTimeout(() => {
+        messageText.style.opacity = 1;
+        messageImage.style.opacity = 1;
+      }, 600);
+    }
 
-function showNextMessage() {
-  showMessage(messages[currentIndex]);
-  currentIndex = (currentIndex + 1) % messages.length;
-}
+    function startExperience() {
+      // Ẩn nút bắt đầu, hiện nội dung
+      startButton.style.display = "none";
+      messageContainer.style.display = "block";
 
-// Hiển thị ảnh đầu tiên
-showNextMessage();
+      // Phát nhạc
+      bgMusic.muted = false;
+      bgMusic.play();
 
-// Hiển thị tuần tự sau mỗi 5 giây
-setInterval(showNextMessage, 5000);
+      // Hiển thị ảnh đầu tiên
+      showMessage(messages[currentIndex]);
+      currentIndex = (currentIndex + 1) % messages.length;
 
+      // Bắt đầu lặp sau mỗi 5 giây
+      intervalId = setInterval(() => {
+        showMessage(messages[currentIndex]);
+        currentIndex = (currentIndex + 1) % messages.length;
+      }, 5000);
+    }
+
+    // Gắn sự kiện khi nhấn nút
+    startButton.addEventListener("click", startExperience);
   </script>
 
-  <audio id="bgMusic" autoplay loop>
-  <source src="audio/music.mp3" type="audio/mpeg" />
-  Trình duyệt của bạn không hỗ trợ âm thanh.
-</audio>
-
-<script>
-  const bgMusic = document.getElementById("bgMusic");
-
-  // Mute để cho phép autoplay
-  bgMusic.muted = true;
-  bgMusic.play().catch(() => {
-    // Một số trình duyệt vẫn yêu cầu tương tác
-  });
-
-  // Khi người dùng chạm vào lần đầu, bỏ mute và phát lại
-  window.addEventListener('click', function () {
-    bgMusic.muted = false;
-    bgMusic.play();
-  }, { once: true });
-
-  // Cũng thêm hỗ trợ chạm trên di động
-  window.addEventListener('touchstart', function () {
-    bgMusic.muted = false;
-    bgMusic.play();
-  }, { once: true });
-</script>
+  
+</body>
 
 </body>
 </html>
