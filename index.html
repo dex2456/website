@@ -105,35 +105,36 @@
     ];
 
     const messageText = document.getElementById("messageText");
-    const messageImage = document.getElementById("messageImage");
+const messageImage = document.getElementById("messageImage");
 
-    function showMessage(message) {
-      messageText.style.opacity = 0;
-      messageImage.style.opacity = 0;
+let currentIndex = 0;
 
-      setTimeout(() => {
-        messageText.textContent = message.text;
-        messageImage.src = message.img;
-      }, 500);
+function showMessage(message) {
+  messageText.style.opacity = 0;
+  messageImage.style.opacity = 0;
 
-      setTimeout(() => {
-        messageText.style.opacity = 1;
-        messageImage.style.opacity = 1;
-      }, 600);
-    }
+  setTimeout(() => {
+    messageText.textContent = message.text;
+    messageImage.src = message.img;
+  }, 500);
 
-    function showRandomMessage() {
-      const random = messages[Math.floor(Math.random() * messages.length)];
-      showMessage(random);
-    }
+  setTimeout(() => {
+    messageText.style.opacity = 1;
+    messageImage.style.opacity = 1;
+  }, 600);
+}
 
-    // Hiển thị ảnh đầu tiên trước
-showMessage(messages[0]);
+function showNextMessage() {
+  showMessage(messages[currentIndex]);
+  currentIndex = (currentIndex + 1) % messages.length;
+}
 
-// Sau 5 giây, bắt đầu chuyển ngẫu nhiên
-setTimeout(() => {
-  setInterval(showRandomMessage, 5000);
-}, 5000);
+// Hiển thị ảnh đầu tiên
+showNextMessage();
+
+// Hiển thị tuần tự sau mỗi 5 giây
+setInterval(showNextMessage, 5000);
+
   </script>
 
   <audio id="bgMusic" autoplay loop muted>
